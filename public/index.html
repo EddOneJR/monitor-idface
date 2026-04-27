@@ -395,14 +395,15 @@ const EQS_DEFAULT=[
   {id:1,cliente:"Cores do Rio",equip:"Facial Entrada",url:"http://187.16.114.155:9701"},
   {id:2,cliente:"Cores do Rio",equip:"Facial Recepção",url:"http://187.16.114.155:9601"},
 ];
-const LS_KEY='infokings_eqs_v1';
 let eqs=[],smap={},filtro='todos',nid=1000,intId=null,notifOn=false;
 const IV=60,HIST_MAX=20;
 
-function salvarLS(){try{localStorage.setItem(LS_KEY,JSON.stringify(eqs));}catch(e){}}
-function carregarLS(){
-  try{const raw=localStorage.getItem(LS_KEY);if(raw){const p=JSON.parse(raw);if(Array.isArray(p)&&p.length>0){eqs=p;nid=Math.max(...eqs.map(e=>e.id))+1;return;}}}catch(e){}
-  eqs=JSON.parse(JSON.stringify(EQS_DEFAULT));salvarLS();
+async function salvarLS(){
+  try{await fetch('/api/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(eqs)});}catch(e){}
+}
+async function carregarLS(){
+  try{const res=await fetch('/api/check');const data=await res.json();if(Array.isArray(data)&&data.length>0){eqs=data;nid=Math.max(...eqs.map(e=>e.id))+1;return;}}catch(e){}
+  eqs=JSON.parse(JSON.stringify(EQS_DEFAULT));
 }
 
 async function checar(eq){
@@ -620,7 +621,7 @@ function resetCD(){
   intId=setInterval(()=>{cd--;document.getElementById('prox').textContent=`Próxima verificação em ${cd}s`;if(cd<=0){clearInterval(intId);verificarTodos();}},1000);
 }
 
-carregarLS();renderTudo();stats();verificarTodos();
+carregarLS().then(()=>{renderTudo();stats();verificarTodos();});
 </script>
 </body>
 </html>
