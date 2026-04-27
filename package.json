@@ -1,7 +1,8 @@
 {
-  "version": 2,
-  "rewrites": [
-    { "source": "/api/check", "destination": "/api/check.js" },
-    { "source": "/(.*)", "destination": "/public/$1" }
-  ]
+  "name": "monitor-idface",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@upstash/redis": "^1.34.0"
+  }
 }
