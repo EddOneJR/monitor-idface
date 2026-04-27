@@ -1,6 +1,7 @@
 {
-  "name": "monitor-idface",
-  "version": "2.2.0",
-  "description": "Monitor de equipamentos iDFace Max — InfoKings",
-  "private": true
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/check", "destination": "/api/check.js" },
+    { "source": "/(.*)", "destination": "/public/$1" }
+  ]
 }
